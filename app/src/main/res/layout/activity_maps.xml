@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_height="match_parent"
+                      android:layout_width="match_parent">
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity" />
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    android:id="@+id/rell1"
+    android:background="#fff">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ic_magnify"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_magnify"/>
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/ic_magnify"
+            android:id="@+id/sea"
+            android:background="@null"
+            android:textColor="#000"
+            android:hint="Destination.."
+            android:completionThreshold="1"
+            android:singleLine="true"
+            />
+
+
+    </RelativeLayout>
+    
+    
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/rell1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/geps"
+        android:src="@drawable/ic_geps"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/polbor"
+        android:text="Pol. Box"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/polbor"
+        android:layout_alignBottom="@id/polbor"
+        android:text="Alt."
+        android:id="@+id/altr"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/altr"
+        android:layout_alignBottom="@id/altr"
+        android:text="Search"
+        android:id="@+id/norm"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/norm"
+        android:onClick="saveNote"
+        android:id="@+id/mimic"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/mimic"
+        android:text="0,0,0,0,0"
+        android:textColor="#000"
+        android:id="@+id/tv70"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/norm"
+        android:layout_alignBottom="@id/norm"
+        android:text="Reset"
+        android:id="@+id/rese"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/mimic"
+        android:onClick="loadNote"
+        android:text="Reset"
+        android:id="@+id/mimic2"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/norm"
+        android:text="Lat"
+        android:id="@+id/lat_a"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lat_a"
+        android:layout_marginLeft="50dp"
+        android:layout_alignBottom="@id/lat_a"
+        android:text="Long"
+        android:id="@+id/long_a"/>
+</RelativeLayout>

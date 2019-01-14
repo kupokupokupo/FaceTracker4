@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "957295514565",
+    "firebase_url": "https://green-talent-227106.firebaseio.com",
+    "project_id": "green-talent-227106",
+    "storage_bucket": "green-talent-227106.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957295514565:android:ad734167720a49d4",
+        "android_client_info": {
+          "package_name": "com.google.android.gms.samples.vision.face.facetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957295514565-e52slnauf9mufjl5bttet2rsdnpbuvl8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.android.gms.samples.vision.face.facetracker",
+            "certificate_hash": "ef702a86fc1f910e2bac8e901dc8fbdd6867b352"
+          }
+        },
+        {
+          "client_id": "957295514565-7epacagfojdmgteetd89q39v65k936ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjEVJsCHzpFNyY6mxN0SFazRlxm5JkFls"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957295514565-7epacagfojdmgteetd89q39v65k936ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
