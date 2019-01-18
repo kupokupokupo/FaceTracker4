@@ -782,33 +782,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
      private double[][] formulateValue() {
-         noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-             @Override
-             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                 if (documentSnapshot.exists()) {
-                     String latA = documentSnapshot.getString("latitude");
-                     String longA = documentSnapshot.getString("longitude");
-                     String[] parts = latA.split(",");
-                     String[] parts2 = longA.split(",");
+         double[] crm_rt = new double[place.length];
+         String tv70String=tv70.getText().toString();
+         String tv71String=tv71.getText().toString();
 
-                     for(int i=0;i<5;i++){
-                         double[] distance=euclideanDistance(Double.valueOf(parts[i]),Double.valueOf(parts2[i]));
-                            for(int j=0;j<place.length;j++){
-                                if(distance[j]<150){
-                                    if (distance[j]<100){
-                                        if(distance[j]<75){
-                                            if (distance[j]<30){crm_rt[j]=crm_rt[j]+0.1*1000000;}
-                                            else{crm_rt[j]=crm_rt[j]+0.05*1000000;}
-                                        }
-                                        else{crm_rt[j]=crm_rt[j]+0.01*1000000;}
-                                    }
-                                    else{crm_rt[j]=crm_rt[j]+0.005*1000000;}
-                                }
-                            }
+         String[] parts = tv70String.split(",");
+         String[] parts2 = tv71String.split(",");
+
+         for(int i=0;i<5;i++){
+             double[] distance=euclideanDistance(Double.valueOf(parts[i]),Double.valueOf(parts2[i]));
+             for(int j=0;j<place.length;j++){
+                 if(distance[j]<150){
+                     if (distance[j]<100){
+                         if(distance[j]<75){
+                             if (distance[j]<30){crm_rt[j]=crm_rt[j]+0.1*1000000;}
+                             else{crm_rt[j]=crm_rt[j]+0.05*1000000;}
+                         }
+                         else{crm_rt[j]=crm_rt[j]+0.01*1000000;}
                      }
+                     else{crm_rt[j]=crm_rt[j]+0.005*1000000;}
                  }
              }
-         });
+         }
+         Toast.makeText(MapsActivity.this,"crime rate = "+crm_rt[0],Toast.LENGTH_SHORT).show();
 
          for (int i = 0; i < place.length; i++) {
              for (int j = 0; j < 4; j++) {
@@ -820,7 +816,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
              }
          }
 
+         Toast.makeText(MapsActivity.this,"crime rate2 = "+crm_rt[0],Toast.LENGTH_SHORT).show();
          return valu2;
+
      }
 
 
