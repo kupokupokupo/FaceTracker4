@@ -76,20 +76,22 @@
         android:text="Search"
         android:id="@+id/norm"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/norm"
-        android:onClick="saveNote"
-        android:id="@+id/mimic"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/mimic"
+        android:layout_above="@id/polbor"
         android:text="0,0,0,0,0"
         android:textColor="#000"
         android:id="@+id/tv70"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv70"
+        android:text="0,0,0,0,0"
+        android:textColor="#000"
+        android:id="@+id/tv71"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -98,15 +100,6 @@
         android:layout_alignBottom="@id/norm"
         android:text="Reset"
         android:id="@+id/rese"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/mimic"
-        android:onClick="loadNote"
-        android:text="Reset"
-        android:id="@+id/mimic2"/>
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -123,4 +116,5 @@
         android:layout_alignBottom="@id/lat_a"
         android:text="Long"
         android:id="@+id/long_a"/>
+
 </RelativeLayout>

@@ -51,6 +51,24 @@
       android:layout_marginTop="350dp"
       android:text="0" />
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="78dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="181dp"
+        android:layout_toEndOf="@+id/lat_a"
+        android:text="0,0,0,0,0" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_centerVertical="true"
+        android:text="0,0,0,0,0" />
+
+
   <TextView
       android:id="@+id/textView2"
       android:layout_width="wrap_content"
@@ -103,12 +121,6 @@
       android:layout_marginEnd="51dp"
       android:layout_marginRight="51dp"
       android:text="Switch Activity" />
-
-  <Button
-      android:id="@+id/button5"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="..." />
 
   <TextView
       android:id="@+id/textView7"

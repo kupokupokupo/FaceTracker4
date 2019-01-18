@@ -1,6 +1,7 @@
 package com.google.android.gms.samples.vision.face.facetracker;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,12 +9,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,7 +25,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +34,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -48,6 +49,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -206,11 +208,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             {35.606330, 139.691620},
             {35.605080, 139.688518}};
 
-
-    //    private static final String[]placePolice=new String[]{"Shibuya","Shinjuku"};
-//    public static double [][] au_mPolice={{35.658000,139.701600},
-//            {35.689700,139.700400}} ;
-
     private static final int[] placePolice = new int[]{1, 2};
     public static double[][] au_mPolice = {{35.607107, 139.685200},
             {35.607248, 139.686033}};
@@ -352,9 +349,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static double[][] valu2 = new double[place.length][4];
 
-    private static double[] crm_rt = {1, 2, 3, 1, 2, 4};
-    private static double[] crowdedness = {0.2, 3, 2, 1, 4, 0.7};
-    private static double[] illum = {2, 4, 5, 1, 0.9, 2};
+    private static double[] crm_rt = new double[place.length];
+    private static double[] crowdedness = {0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01};
+    private static double[] illum = {0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01};
     private static double[] dista = new double[place.length];
 
     private static double[] err_pos = new double[dista.length];
@@ -373,8 +370,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 //        Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
-
-
         if (mLocationPermissionGranted) {
             getDeviceLocation();
 
@@ -384,6 +379,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            drawHeatmapWithoutSave();
             init();
         }
     }
@@ -401,13 +397,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private EditText mSearch;
     private ImageView mGps;
     private Button res, polb, sear, alt;
-    private TextView lat_a, long_a, tv70;
-
-
-//    LatLng auc= new LatLng(45.661800, 139.704100);
-//    ArrayList<LatLng> locations;
-//    double [] lat_1=[au_dob auc];
-
+    private TextView lat_a, long_a, tv70, tv71;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -427,9 +417,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat_a = (TextView) findViewById(R.id.lat_a);
         long_a = (TextView) findViewById(R.id.long_a);
         tv70 = (TextView) findViewById(R.id.tv70);
+        tv71 = (TextView) findViewById(R.id.tv71);
 
-
-        Intent intent = getIntent();
+         Intent intent = getIntent();
         String te = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
         Toast.makeText(MapsActivity.this, "ini te" + te, Toast.LENGTH_SHORT).show();
 
@@ -438,6 +428,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
 //                .findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
+
         getLocationPermission();
         init();
     }
@@ -457,6 +448,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
+                    String latA = documentSnapshot.getString("latitude");
+                    String longA = documentSnapshot.getString("longitude");
+                    tv70.setText("" + latA);
+                    tv71.setText("" + longA);
+                } else {
+                    Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -471,8 +482,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 sear.setEnabled(true);
                 polb.setEnabled(true);
                 alt.setEnabled(true);
+
             }
         });
+
+//                        mProvider = new HeatmapTileProvider.Builder().data(
+//                        mLists.get(getString(R.string.police_stations)).getData()).build();
+//                mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
 
         polb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -494,8 +510,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 geoLocate3();
             }
         });
+
+
+//        drawHeatmap(tv70,tv71);
+//                try {
+//            mLists.put(getString(R.string.police_stations), new DataSet(readItems(R.raw.police),
+//                    getString(R.string.police_stations_url)));
+//        } catch (JSONException e) {
+//            Toast.makeText(this, "Problem reading list of markers.", Toast.LENGTH_LONG).show();
+//        }
+//
+//
+//        if (mProvider == null) {
+//            mProvider = new HeatmapTileProvider.Builder().data(
+//                    mLists.get(getString(R.string.police_stations)).getData()).build();
+//            mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+//            // Render links
+//        } else {
+////            mProvider.setData(mLists.get(dataset).getData());
+//            mOverlay.clearTileCache();}
+//
+//
+//        // Check if need to instantiate (avoid setData etc twice)
+//
+
+
     }
 
+
+//    private void drawHeatmap(TextView tv70,TextView tv71){
+//        String tv70String = tv70.getText().toString();
+//        String tv71String = tv71.getText().toString();
+//        String[] parts = tv70String.split(",");
+//        String[] parts2 = tv71String.split(",");
+//
+//        for(int i=0;i<5;i++) {
+//            double partsDouble = Double.valueOf(parts[i]);
+//            double parts2Double = Double.valueOf(parts2[i]);
+//            LatLng p1 = new LatLng(partsDouble, parts2Double);
+//            mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(30).strokeWidth(0).fillColor(Color.argb(60,255,0,0)));
+//            mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(75).strokeWidth(0).fillColor(Color.argb(50,255,109,0)));
+//            mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(100).strokeWidth(0).fillColor(Color.argb(30,255,255,0)));
+//            mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(150).strokeWidth(0).fillColor(Color.argb(30,102,255,51)));
+//        }
+//    }
 
     public void saveNote(View v) {
         String latAString = lat_a.getText().toString();
@@ -507,7 +565,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (documentSnapshot.exists()) {
                     Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
                     String latA = documentSnapshot.getString("latitude");
-                    tv70.setText("" + latA);
+                    String longA = documentSnapshot.getString("longitude");
+                    tv70.setText("" + latA);tv71.setText("" + longA);
                 } else {
                     Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
                 }
@@ -520,18 +579,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         String tv70String = tv70.getText().toString();
+        String tv71String = tv71.getText().toString();
         String[] parts = tv70String.split(",");
+        String[] parts2 = tv71String.split(",");
         String[] partsClone = parts.clone();
+        String[] parts2Clone = parts2.clone();
 
         for (int i = 0; i < parts.length - 1; i++) {
             parts[i + 1] = partsClone[i];
+            parts2[i+1] = parts2Clone[i];
         }
 
         parts[0] = latAString;
+        parts2[0] = longAString;
         Map<String, Object> note = new HashMap<>();
         String printPart = Arrays.toString(parts).replace("[", "").replace("]", "");
+        String printPart2 = Arrays.toString(parts2).replace("[", "").replace("]", "");
         note.put("latitude", printPart);
-        note.put("longitude", longAString);
+        note.put("longitude", printPart2);
 
 
         noteref.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -548,28 +613,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    public void loadNote(View v) {
-        noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
-                    String latA = documentSnapshot.getString("latitude");
-                    tv70.setText("" + latA);
-                } else {
-                    Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void geoLocate() {
         mMap.clear();
+        drawHeatmapWithoutSave();
         Intent intent = getIntent();
 
         String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
@@ -616,7 +662,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         filter = dijkstraAlgorithm(index, lastin);
         int[] nextn2 = drawPly(filter, indexPerm);
         polylineDraw(nextn2);
-
 //        Toast.makeText(MapsActivity.this,"This is destination index: "+ lastin,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"This is nearest point : "+place_name,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"Nearest Place : "+depart,Toast.LENGTH_SHORT).show();
@@ -625,6 +670,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void geoLocate3() {
         mMap.clear();
+        drawHeatmapWithoutSave();
         Intent intent = getIntent();
 
         String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
@@ -680,6 +726,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             polylineDraw(nextn2);
         }
+
+        Circle circle = mMap.addCircle(new CircleOptions().center(new LatLng(35,170)).radius(100000).strokeColor(Color.RED).fillColor(Color.GREEN));
 //        sear.setEnabled(false);
 //        polb.setEnabled(false);
 //        alt.setEnabled(false);
@@ -689,9 +737,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            Toast.makeText(MapsActivity.this,"Suspected place : "+te2,Toast.LENGTH_SHORT).show();
     }
 
-
     private void geoLocate2() {
         mMap.clear();
+        drawHeatmapWithoutSave();
         Intent intent = getIntent();
         String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
 
@@ -718,6 +766,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    private double[] euclideanDistance(double latA1,double longA1){
+        double[] distance=new double [place.length];
+        for(int j=0;j<place.length;j++) {
+            distance[j]=measure(latA1,longA1,au_m[j][0],au_m[j][1]);
+        }
+        return distance;
+    }
 
     private double searchMinArray(double[] arr) {
         double[] arrClone = arr.clone();
@@ -726,21 +781,64 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return minVal;
     }
 
-    ;
+     private double[][] formulateValue() {
+         noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+             @Override
+             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                 if (documentSnapshot.exists()) {
+                     String latA = documentSnapshot.getString("latitude");
+                     String longA = documentSnapshot.getString("longitude");
+                     String[] parts = latA.split(",");
+                     String[] parts2 = longA.split(",");
+
+                     for(int i=0;i<5;i++){
+                         double[] distance=euclideanDistance(Double.valueOf(parts[i]),Double.valueOf(parts2[i]));
+                            for(int j=0;j<place.length;j++){
+                                if(distance[j]<150){
+                                    if (distance[j]<100){
+                                        if(distance[j]<75){
+                                            if (distance[j]<30){crm_rt[j]=crm_rt[j]+0.1*1000000;}
+                                            else{crm_rt[j]=crm_rt[j]+0.05*1000000;}
+                                        }
+                                        else{crm_rt[j]=crm_rt[j]+0.01*1000000;}
+                                    }
+                                    else{crm_rt[j]=crm_rt[j]+0.005*1000000;}
+                                }
+                            }
+                     }
+                 }
+             }
+         });
+
+         for (int i = 0; i < place.length; i++) {
+             for (int j = 0; j < 4; j++) {
+                 if (valu[i][j] != 0) {
+                     int curNod = valu[i][j] - 1;
+                     valu2[i][j]=measure(au_m[curNod][0],au_m[curNod][1],au_m[i][0],au_m[i][1])
+                             +crm_rt[i]+crm_rt[curNod]+illum[i]+illum[curNod]+crowdedness[i]+crowdedness[curNod];
+                 }
+             }
+         }
+
+         return valu2;
+     }
+
+
+    private double measure(double lat1, double lon1, double lat2, double lon2){  // generally used geo measurement function
+        double R = 6378.137; // Radius of earth in KM
+        double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+        double dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                        Math.sin(dLon/2) * Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d = R * c;
+        return d * 1000; // meters
+    }
 
     private boolean[][] dijkstraAlgorithm(int index, int lastin) {
         Arrays.fill(dista, 100000);
-        for (int i = 0; i < place.length; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (valu[i][j] != 0) {
-                    int curNod = valu[i][j] - 1;
-                    double latDist = au_m[curNod][0] - au_m[i][0];
-                    double longDist = au_m[curNod][1] - au_m[i][1];
-                    double distSq = latDist * latDist + longDist * longDist;
-                    valu2[i][j] = java.lang.Math.sqrt(distSq);
-                }
-            }
-        }
+        valu2=formulateValue();
         filter = new boolean[place.length][place.length];
         path_val = new int[place.length][place.length];
         String[] place2 = place.clone();
@@ -751,7 +849,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int burnIndex = 1;
         double[] dist2 = dista.clone();
         for (int i = 0; (i < place2.length); i++) {
-
             for (int k = 0; k < dista.length; ++k) {
                 if (dista[k] > distanceNode[k] + index2) {
                     dista[k] = distanceNode[k] + index2;
@@ -932,13 +1029,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return distanceNode;
     }
 
-
     private void polylineDraw(int[] nextn2) {
         for (int i = 0; i < nextn2.length - 1; i++) {
             LatLng p1 = new LatLng(au_m[nextn2[i]][0], au_m[nextn2[i]][1]);
             LatLng p2 = new LatLng(au_m[nextn2[i + 1]][0], au_m[nextn2[i + 1]][1]);
             mMap.addPolyline(new PolylineOptions().add(p1, p2).width(8F).color(Color.rgb(0, 100, 0)));
         }
+    }
+
+    private void drawHeatmapWithoutSave() {
+        noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
+                    String latA = documentSnapshot.getString("latitude");
+                    String longA = documentSnapshot.getString("longitude");
+                    String[] parts = latA.split(",");
+                    String[] parts2 = longA.split(",");
+                    for (int i = 0; i < 5; i++) {
+                        double partsDouble = Double.valueOf(parts[i]);
+                        double parts2Double = Double.valueOf(parts2[i]);
+                        LatLng p1 = new LatLng(partsDouble, parts2Double);
+                        mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(30).strokeWidth(0).fillColor(Color.argb(60, 255, 0, 0)));
+                        mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(75).strokeWidth(0).fillColor(Color.argb(50, 255, 109, 0)));
+                        mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(100).strokeWidth(0).fillColor(Color.argb(30, 255, 255, 0)));
+                        mMap.addCircle(new CircleOptions().center(new LatLng(p1.latitude, p1.longitude)).radius(150).strokeWidth(0).fillColor(Color.argb(30, 102, 255, 51)));
+                    }
+                } else {
+                    Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private int search_nearest(double[] err_pos, double posnow_lat, double posnow_lng) {
@@ -1063,13 +1190,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    /**
-     * Heat map starts
-     */
 
-        private static final int ALT_HEATMAP_RADIUS = 50;
+    private static final int ALT_HEATMAP_RADIUS = 50;
 
-        private static final int[] ALT_HEATMAP_GRADIENT_COLORS = {
+    private static final int[] ALT_HEATMAP_GRADIENT_COLORS = {
                 Color.argb(0, 0, 255, 255),// transparent
                 Color.argb(255 / 3 * 2, 0, 255, 255),
                 Color.rgb(0, 191, 255),
@@ -1077,118 +1201,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Color.rgb(255, 0, 0)
         };
 
-        public static final float[] ALT_HEATMAP_GRADIENT_START_POINTS = {
+    public static final float[] ALT_HEATMAP_GRADIENT_START_POINTS = {
                 0.0f, 0.10f, 0.20f, 0.60f, 1.0f
         };
 
 
-        public static final Gradient ALT_HEATMAP_GRADIENT = new Gradient(ALT_HEATMAP_GRADIENT_COLORS,
+    public static final Gradient ALT_HEATMAP_GRADIENT = new Gradient(ALT_HEATMAP_GRADIENT_COLORS,
                 ALT_HEATMAP_GRADIENT_START_POINTS);
 
-        private HeatmapTileProvider mProvider;
-        private TileOverlay mOverlay;
+    private HeatmapTileProvider mProvider;
+    private TileOverlay mOverlay;
 
-        private boolean mDefaultGradient = true;
-        private boolean mDefaultRadius = true;
-        private boolean mDefaultOpacity = true;
+//
+//
+//    /**
+//     * Maps name of data set to data (list of LatLngs)
+//     * Also maps to the URL of the data set for attribution
+//     */
 
-    /**
-     * Maps name of data set to data (list of LatLngs)
-     * Also maps to the URL of the data set for attribution
-     */
-    private HashMap<String, DataSet> mLists = new HashMap<String, DataSet>();
+//
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.heatmaps_demo;
-    }
-
-    @Override
-    protected void startDemo() {
-//        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-25, 143), 4));
-
-        // Set up the spinner/dropdown list
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.heatmaps_datasets_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new SpinnerActivity());
-
-        try {
-            mLists.put(getString(R.string.police_stations), new DataSet(readItems(R.raw.police),
-                    getString(R.string.police_stations_url)));
-            mLists.put(getString(R.string.medicare), new DataSet(readItems(R.raw.medicare),
-                    getString(R.string.medicare_url)));
-        } catch (JSONException e) {
-            Toast.makeText(this, "Problem reading list of markers.", Toast.LENGTH_LONG).show();
-        }
-
-        // Make the handler deal with the map
-        // Input: list of WeightedLatLngs, minimum and maximum zoom levels to calculate custom
-        // intensity from, and the map to draw the heatmap on
-        // radius, gradient and opacity not specified, so default are used
-    }
-
-    public void changeRadius(View view) {
-        if (mDefaultRadius) {
-            mProvider.setRadius(ALT_HEATMAP_RADIUS);
-        } else {
-            mProvider.setRadius(HeatmapTileProvider.DEFAULT_RADIUS);
-        }
-        mOverlay.clearTileCache();
-        mDefaultRadius = !mDefaultRadius;
-    }
-
-    public void changeGradient(View view) {
-        if (mDefaultGradient) {
-            mProvider.setGradient(ALT_HEATMAP_GRADIENT);
-        } else {
-            mProvider.setGradient(HeatmapTileProvider.DEFAULT_GRADIENT);
-        }
-        mOverlay.clearTileCache();
-        mDefaultGradient = !mDefaultGradient;
-    }
-
-    public void changeOpacity(View view) {
-        if (mDefaultOpacity) {
-            mProvider.setOpacity(ALT_HEATMAP_OPACITY);
-        } else {
-            mProvider.setOpacity(HeatmapTileProvider.DEFAULT_OPACITY);
-        }
-        mOverlay.clearTileCache();
-        mDefaultOpacity = !mDefaultOpacity;
-    }
-
-    // Dealing with spinner choices
-    public class SpinnerActivity implements AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int pos, long id) {
-            String dataset = parent.getItemAtPosition(pos).toString();
-
-            TextView attribution = ((TextView) findViewById(R.id.attribution));
-
-            // Check if need to instantiate (avoid setData etc twice)
-            if (mProvider == null) {
-                mProvider = new HeatmapTileProvider.Builder().data(
-                        mLists.get(getString(R.string.police_stations)).getData()).build();
-                mOverlay = getMap().addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-                // Render links
-                attribution.setMovementMethod(LinkMovementMethod.getInstance());
-            } else {
-                mProvider.setData(mLists.get(dataset).getData());
-                mOverlay.clearTileCache();
-            }
-            // Update attribution
-            attribution.setText(Html.fromHtml(String.format(getString(R.string.attrib_format),
-                    mLists.get(dataset).getUrl())));
-
-        }
-
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
-        }
-    }
 
     // Datasets from http://data.gov.au
     private ArrayList<LatLng> readItems(int resource) throws JSONException {
@@ -1208,22 +1240,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * Helper class - stores data sets and sources.
      */
-    private class DataSet {
-        private ArrayList<LatLng> mDataset;
-        private String mUrl;
 
-        public DataSet(ArrayList<LatLng> dataSet, String url) {
-            this.mDataset = dataSet;
-            this.mUrl = url;
-        }
-
-        public ArrayList<LatLng> getData() {
-            return mDataset;
-        }
-
-        public String getUrl() {
-            return mUrl;
-        }
-    }
 
 }
