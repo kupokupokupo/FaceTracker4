@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -421,6 +422,7 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                 dialog_TextView3 = (TextView)dialog1.findViewById(R.id.dialogtext3);
                 dialog_TextView2.setText("We found a suspicious face behind");
                 Button dialog_OK = (Button)dialog1.findViewById(R.id.dialog_ok);
+                Button callPolice = (Button)dialog1.findViewById(R.id.callPolice);
                 dialog_OK.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -484,10 +486,22 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                         dismissDialog(CUSTOM_DIALOG_ID);
                     }});
 
+                callPolice.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                        String number = "12345678";
+                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        intent.setData(Uri.parse("tel:" +number));
+                        startActivity(intent);
+                    }});
+
                 dialog1.show();
                 Window window = dialog1.getWindow();
                 window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 break;
+
+
         }
 
         return dialog1;
