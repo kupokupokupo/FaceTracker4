@@ -491,9 +491,13 @@ public final class FaceTrackerActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         String number = "12345678";
-                        Intent intent = new Intent(Intent.ACTION_CALL);
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
                         intent.setData(Uri.parse("tel:" +number));
-                        startActivity(intent);
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(FaceTrackerActivity.this,"Can't resolve app for ACTION_DIAL Intent.",Toast.LENGTH_SHORT).show();
+                        }
                     }});
 
                 dialog1.show();
