@@ -65,8 +65,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    DatabaseHelper mDatabaseHelper;
-    //    private static final String[]place_hint=new String[]{"Shibuya","Shinjuku","Ikebukuro","Tokyo","Ookayama","Akihabara",
+    //    private static fina String[]place_hint=new String[]{"Shibuya","Shinjuku","Ikebukuro","Tokyo","Ookayama","Akihabara",
 //            "Tsunashima","Jiyugaoka","Midorigaoka","Meguro","Okusawa Hospital","Senzokuike","Kita-senzoku"};
 //    private static final String[]place=new String[]{"Shibuya","Shinjuku","Ikebukuro","Tokyo","Ookayama","Akihabara",
 //            "Tsunashima","Jiyugaoka","Midorigaoka","Meguro","Okusawa Hospital","Senzokuike","Wktk. Kinder.","Kita-senzoku"};
@@ -208,9 +207,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             {35.606330, 139.691620},
             {35.605080, 139.688518}};
 
-    private static final int[] placePolice = new int[]{1, 2};
+    private static final String[] placePolice = new String[]{"1", "52"};
     public static double[][] au_mPolice = {{35.607107, 139.685200},
-            {35.607248, 139.686033}};
+            {35.606834, 139.692820}};
 
     private static int[][] valu = {{14, 2, 0, 0},
             {1, 3, 15, 0},
@@ -368,7 +367,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
         if (mLocationPermissionGranted) {
             getDeviceLocation();
@@ -420,15 +418,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         tv71 = (TextView) findViewById(R.id.tv71);
 
          Intent intent = getIntent();
-        String te = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
-        Toast.makeText(MapsActivity.this, "ini te" + te, Toast.LENGTH_SHORT).show();
-
-//            int index00=Integer.parseInt(index0);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
         getLocationPermission();
         init();
     }
@@ -452,7 +441,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
                     String latA = documentSnapshot.getString("latitude");
                     String longA = documentSnapshot.getString("longitude");
                     tv70.setText("" + latA);
@@ -479,16 +467,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View view) {
                 mMap.clear();
+                drawHeatmapWithoutSave();
                 sear.setEnabled(true);
                 polb.setEnabled(true);
                 alt.setEnabled(true);
 
             }
         });
-
-//                        mProvider = new HeatmapTileProvider.Builder().data(
-//                        mLists.get(getString(R.string.police_stations)).getData()).build();
-//                mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
 
         polb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -510,32 +495,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 geoLocate3();
             }
         });
-
-
-//        drawHeatmap(tv70,tv71);
-//                try {
-//            mLists.put(getString(R.string.police_stations), new DataSet(readItems(R.raw.police),
-//                    getString(R.string.police_stations_url)));
-//        } catch (JSONException e) {
-//            Toast.makeText(this, "Problem reading list of markers.", Toast.LENGTH_LONG).show();
-//        }
-//
-//
-//        if (mProvider == null) {
-//            mProvider = new HeatmapTileProvider.Builder().data(
-//                    mLists.get(getString(R.string.police_stations)).getData()).build();
-//            mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-//            // Render links
-//        } else {
-////            mProvider.setData(mLists.get(dataset).getData());
-//            mOverlay.clearTileCache();}
-//
-//
-//        // Check if need to instantiate (avoid setData etc twice)
-//
-
-
     }
+
+
 
 
 //    private void drawHeatmap(TextView tv70,TextView tv71){
@@ -555,70 +517,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
 //    }
 
-    public void saveNote(View v) {
-        String latAString = lat_a.getText().toString();
-        String longAString = long_a.getText().toString();
-
-        noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
-                    String latA = documentSnapshot.getString("latitude");
-                    String longA = documentSnapshot.getString("longitude");
-                    tv70.setText("" + latA);tv71.setText("" + longA);
-                } else {
-                    Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MapsActivity.this, "oops", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        String tv70String = tv70.getText().toString();
-        String tv71String = tv71.getText().toString();
-        String[] parts = tv70String.split(",");
-        String[] parts2 = tv71String.split(",");
-        String[] partsClone = parts.clone();
-        String[] parts2Clone = parts2.clone();
-
-        for (int i = 0; i < parts.length - 1; i++) {
-            parts[i + 1] = partsClone[i];
-            parts2[i+1] = parts2Clone[i];
-        }
-
-        parts[0] = latAString;
-        parts2[0] = longAString;
-        Map<String, Object> note = new HashMap<>();
-        String printPart = Arrays.toString(parts).replace("[", "").replace("]", "");
-        String printPart2 = Arrays.toString(parts2).replace("[", "").replace("]", "");
-        note.put("latitude", printPart);
-        note.put("longitude", printPart2);
-
-
-        noteref.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(MapsActivity.this, "okay", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MapsActivity.this, "not okay", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-
     private void geoLocate() {
         mMap.clear();
         drawHeatmapWithoutSave();
         Intent intent = getIntent();
 
-        String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
         String searchString = mSearch.getText().toString();
         int indexPlace = -1;
         for (int i = 0; i < dista.length; i++) {
@@ -652,7 +555,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             lastin = indexPlace;
             movcam(new LatLng(au_m[indexPlace][0], au_m[indexPlace][1]), DEFAULT_ZOOM);
         }
-//        Toast.makeText(MapsActivity.this,""+lastin,Toast.LENGTH_SHORT).show();
+
         int index = search_nearest(err_pos_now, crt_lat, crt_lng);
         int indexPerm = search_nearest(err_pos_now, crt_lat, crt_lng);
 
@@ -665,15 +568,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        Toast.makeText(MapsActivity.this,"This is destination index: "+ lastin,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"This is nearest point : "+place_name,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"Nearest Place : "+depart,Toast.LENGTH_SHORT).show();
-//            Toast.makeText(MapsActivity.this,"Suspected place : "+te2,Toast.LENGTH_SHORT).show();
     }
 
     private void geoLocate3() {
         mMap.clear();
         drawHeatmapWithoutSave();
-        Intent intent = getIntent();
 
-        String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
         String searchString = mSearch.getText().toString();
         int indexPlace = -1;
         for (int i = 0; i < dista.length; i++) {
@@ -727,10 +627,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             polylineDraw(nextn2);
         }
 
-        Circle circle = mMap.addCircle(new CircleOptions().center(new LatLng(35,170)).radius(100000).strokeColor(Color.RED).fillColor(Color.GREEN));
-//        sear.setEnabled(false);
-//        polb.setEnabled(false);
-//        alt.setEnabled(false);
+
 //        Toast.makeText(MapsActivity.this,"This is destination : "+place_name,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"This is nearest point : "+place_name,Toast.LENGTH_SHORT).show();
 //            Toast.makeText(MapsActivity.this,"Nearest Place : "+depart,Toast.LENGTH_SHORT).show();
@@ -740,19 +637,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void geoLocate2() {
         mMap.clear();
         drawHeatmapWithoutSave();
-        Intent intent = getIntent();
-        String te2 = intent.getStringExtra(FaceTrackerActivity.EXTRA_TEXT);
-
         double crt_lat = Double.parseDouble(lat_a.getText().toString());
         double crt_lng = Double.parseDouble(long_a.getText().toString());
-//
+
         int lastin = searchNearestPolice(errPosPolice, crt_lat, crt_lng);
         int index = search_nearest(err_pos_now, crt_lat, crt_lng);
         int indexPerm = index;
-//
-        String place_name = place[lastin];
-        String depart = place[index];
-        Toast.makeText(MapsActivity.this, "This is destination : " + place_name, Toast.LENGTH_SHORT).show();
+
         filter = dijkstraAlgorithm(index, lastin);
         int[] nextn2 = drawPly(filter, indexPerm);
         polylineDraw(nextn2);
@@ -781,13 +672,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return minVal;
     }
 
+
+    private String[] textviewToArray(TextView tv70){
+        String tv70String=tv70.getText().toString();
+        String[] parts = tv70String.split(",");
+        return parts;
+    }
+
      private double[][] formulateValue() {
          double[] crm_rt = new double[place.length];
-         String tv70String=tv70.getText().toString();
-         String tv71String=tv71.getText().toString();
 
-         String[] parts = tv70String.split(",");
-         String[] parts2 = tv71String.split(",");
+         String[] parts = textviewToArray(tv70);   String[] parts2 = textviewToArray(tv71);
 
          for(int i=0;i<5;i++){
              double[] distance=euclideanDistance(Double.valueOf(parts[i]),Double.valueOf(parts2[i]));
@@ -795,17 +690,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                  if(distance[j]<150){
                      if (distance[j]<100){
                          if(distance[j]<75){
-                             if (distance[j]<30){crm_rt[j]=crm_rt[j]+0.1*1000000;}
-                             else{crm_rt[j]=crm_rt[j]+0.05*1000000;}
+                             if (distance[j]<30){crm_rt[j]=crm_rt[j]+200;}
+                             else{crm_rt[j]=crm_rt[j]+150;}
                          }
-                         else{crm_rt[j]=crm_rt[j]+0.01*1000000;}
+                         else{crm_rt[j]=crm_rt[j]+75;}
                      }
-                     else{crm_rt[j]=crm_rt[j]+0.005*1000000;}
+                     else{crm_rt[j]=crm_rt[j]+50;}
                  }
              }
          }
-         Toast.makeText(MapsActivity.this,"crime rate = "+crm_rt[0],Toast.LENGTH_SHORT).show();
-
          for (int i = 0; i < place.length; i++) {
              for (int j = 0; j < 4; j++) {
                  if (valu[i][j] != 0) {
@@ -815,10 +708,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                  }
              }
          }
-
-         Toast.makeText(MapsActivity.this,"crime rate2 = "+crm_rt[0],Toast.LENGTH_SHORT).show();
          return valu2;
-
      }
 
 
@@ -1040,7 +930,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Toast.makeText(MapsActivity.this, "loaded fine", Toast.LENGTH_SHORT).show();
                     String latA = documentSnapshot.getString("latitude");
                     String longA = documentSnapshot.getString("longitude");
                     String[] parts = latA.split(",");
@@ -1098,13 +987,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 minimumerrorindex = i;
             }
         }
-        int placeNamePolice = placePolice[minimumerrorindex];
-        Toast.makeText(MapsActivity.this, "" + placeNamePolice, Toast.LENGTH_SHORT).show();
+        String placeNamePolice = placePolice[minimumerrorindex];
+
         for (int i = 0; i < dista.length; i++) {
             if (place[i].equals(placeNamePolice)) {
                 minimumerrorindex = i;
             }
         }
+        Toast.makeText(MapsActivity.this, "indexPol" + placeNamePolice, Toast.LENGTH_SHORT).show();
         return minimumerrorindex;
     }
 
@@ -1186,58 +1076,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions options = new MarkerOptions().position(latLng);
         mMap.addMarker(options);
     }
-
-
-
-    private static final int ALT_HEATMAP_RADIUS = 50;
-
-    private static final int[] ALT_HEATMAP_GRADIENT_COLORS = {
-                Color.argb(0, 0, 255, 255),// transparent
-                Color.argb(255 / 3 * 2, 0, 255, 255),
-                Color.rgb(0, 191, 255),
-                Color.rgb(0, 0, 127),
-                Color.rgb(255, 0, 0)
-        };
-
-    public static final float[] ALT_HEATMAP_GRADIENT_START_POINTS = {
-                0.0f, 0.10f, 0.20f, 0.60f, 1.0f
-        };
-
-
-    public static final Gradient ALT_HEATMAP_GRADIENT = new Gradient(ALT_HEATMAP_GRADIENT_COLORS,
-                ALT_HEATMAP_GRADIENT_START_POINTS);
-
-    private HeatmapTileProvider mProvider;
-    private TileOverlay mOverlay;
-
-//
-//
-//    /**
-//     * Maps name of data set to data (list of LatLngs)
-//     * Also maps to the URL of the data set for attribution
-//     */
-
-//
-
-
-    // Datasets from http://data.gov.au
-    private ArrayList<LatLng> readItems(int resource) throws JSONException {
-        ArrayList<LatLng> list = new ArrayList<LatLng>();
-        InputStream inputStream = getResources().openRawResource(resource);
-        String json = new Scanner(inputStream).useDelimiter("\\A").next();
-        JSONArray array = new JSONArray(json);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject object = array.getJSONObject(i);
-            double lat = object.getDouble("lat");
-            double lng = object.getDouble("lng");
-            list.add(new LatLng(lat, lng));
-        }
-        return list;
-    }
-
-    /**
-     * Helper class - stores data sets and sources.
-     */
-
-
 }

@@ -52,9 +52,6 @@
             android:screenOrientation="fullSensor"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ListDataActivity" />
-        <activity android:name=".EditDataActivity" />
-        <activity android:name=".activity2" />
         <activity android:name=".map2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +59,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".map3" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

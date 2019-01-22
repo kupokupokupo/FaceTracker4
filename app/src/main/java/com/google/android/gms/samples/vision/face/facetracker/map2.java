@@ -1,9 +1,13 @@
 package com.google.android.gms.samples.vision.face.facetracker;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +22,12 @@ public class map2 extends AppCompatActivity {
 
     private static EditText pas;
     private static Button button,see,mp;
-
+    private static final String FINLOC = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COLOC = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final String TAG="map2";
     private static int ERROR_DIALOG_REQUEST=9001;
+    private Boolean mLocationPermissionGranted = false;
+    private static final int LOCATION_PERMISSION_REQ_CODE = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,8 @@ public class map2 extends AppCompatActivity {
 //        button = (Button)findViewById(R.id.button);
         see = (Button) findViewById(R.id.see);
         mp = (Button) findViewById(R.id.button8);
+        getLocationPermission();
+
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -61,7 +70,7 @@ public class map2 extends AppCompatActivity {
         if (pas.getText().toString().equals("project")){
             Toast.makeText(map2.this,"Username and password is correct",
                     Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(map2.this,map3.class);
+            Intent intent = new Intent(map2.this,MapsActivity.class);
             startActivity(intent);
         }
         else {
@@ -70,6 +79,19 @@ public class map2 extends AppCompatActivity {
         }
 
 
+    }
+
+    private void getLocationPermission() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINLOC) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COLOC) == PackageManager.PERMISSION_GRANTED) {
+                mLocationPermissionGranted = true;
+            } else {
+                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQ_CODE);
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQ_CODE);
+        }
     }
 
     public boolean isserviceokay(){
